@@ -43,7 +43,7 @@ def str2bool(v):
     return v.lower() in ("yes", "y", "true", "t", "1")
 
 parser = argparse.ArgumentParser(description='CRAFT Text Detection')
-parser.add_argument('--trained_model', default='weights/craft_mlt_25k.pth', type=str, help='pretrained model')
+parser.add_argument('--trained_model', default='craft_mlt_25k.pth', type=str, help='pretrained model')
 parser.add_argument('--text_threshold', default=0.7, type=float, help='text confidence threshold')
 parser.add_argument('--low_text', default=0.4, type=float, help='text low-bound score')
 parser.add_argument('--link_threshold', default=0.4, type=float, help='link confidence threshold')
@@ -60,7 +60,8 @@ args = parser.parse_args()
 
 
 """ For test images in a folder """
-image_list, _, _ = file_utils.get_files(args.test_folder)
+test_folder = './data/'
+image_list, _, _ = file_utils.get_files(test_folder)
 
 result_folder = './result/'
 if not os.path.isdir(result_folder):
@@ -165,7 +166,6 @@ if __name__ == '__main__':
         filename, file_ext = os.path.splitext(os.path.basename(image_path))
         mask_file = result_folder + "/res_" + filename + '_mask.jpg'
         cv2.imwrite(mask_file, score_text)
-
-        file_utils.saveResult(image_path, image[:,:,::-1], polys, dirname=result_folder)
+        file_utils.saveResult(image_path, image[:,:,::-1],polys, dirname=result_folder)
 
     print("elapsed time : {}s".format(time.time() - t))
